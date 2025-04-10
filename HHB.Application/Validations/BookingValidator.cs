@@ -13,7 +13,7 @@ namespace HHB.Application.Validations
         public BookingValidator()
         {
             RuleFor(x => x.ClientId)
-            .GreaterThan(0).WithMessage("O ID do cliente deve ser maior que zero.");
+            .NotEmpty().WithMessage("O ID do cliente deve ser maior que zero.");
 
             RuleFor(x => x.HotelId)
                 .NotEmpty().WithMessage("O ID do hotel é obrigatório.");

@@ -11,7 +11,7 @@ namespace HHB.Domain.Entities
     public class Booking : BaseEntity
     {
         [BsonElement("clientId")]
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
         [BsonElement("hotelId")]
         public string HotelId { get; set; }
         [BsonElement("roomId")]
@@ -26,6 +26,6 @@ namespace HHB.Domain.Entities
         [BsonElement("paymentStatus")]
         public PaymentStatus PaymentStatus { get; set; }
         [BsonElement("additionalService")]
-        public AdditionalService? AdditionalService { get; set; }
+        public List<AdditionalService>? AdditionalService { get; set; }
     }
 }

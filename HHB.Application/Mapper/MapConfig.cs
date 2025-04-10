@@ -16,8 +16,7 @@ namespace HHB.Application.Mapper
         public MapConfig()
         {
             // AdditionalService
-            CreateMap<AdditionalService, AdditionalServiceDto>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            CreateMap<AdditionalService, AdditionalServiceDto>()               
                 .ReverseMap();
 
             // Booking
@@ -25,13 +24,19 @@ namespace HHB.Application.Mapper
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
                 .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.PaymentStatus.ToString()))
+                .ForMember(dest => dest.AdditionalService, opt => opt.MapFrom(src => src.AdditionalService))
                 .ReverseMap()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<BookingStatus>(src.Status)))
-                .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => Enum.Parse<PaymentStatus>(src.PaymentStatus)));
+                .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => Enum.Parse<PaymentStatus>(src.PaymentStatus)))
+                .ForMember(dest => dest.AdditionalService, opt => opt.MapFrom(src => src.AdditionalService));
 
             // Customer
             CreateMap<Customer, CustomerDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone))
+                .ForMember(dest => dest.Bookings, opt => opt.MapFrom(src => src.Bookings))
                 .ReverseMap();
 
             // Customer Review
@@ -61,15 +66,15 @@ namespace HHB.Application.Mapper
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.HotelId, opt => opt.MapFrom(src => src.HotelId))
                 .ForMember(dest => dest.Number, opt => opt.MapFrom(src => src.Number))
-                .ForMember(dest => dest.RoomType, opt => opt.MapFrom(src => ((int)src.RoomType).ToString()))
+                .ForMember(dest => dest.RoomType, opt => opt.MapFrom(src => src.RoomType.ToString()))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Capacity, opt => opt.MapFrom(src => src.Capacity))
                 .ForMember(dest => dest.PricePerNight, opt => opt.MapFrom(src => src.PricePerNight))
                 .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src => src.IsAvailable))
                 .ReverseMap()
                 .ForMember(dest => dest.RoomType, opt => opt.MapFrom(src =>
-        (RoomType)int.Parse(src.RoomType)
-    ));
+                     Enum.Parse<RoomType>(src.RoomType)
+                 ));
         }
     }
 }

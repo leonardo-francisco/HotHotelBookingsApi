@@ -11,6 +11,8 @@ namespace HHB.Domain.Entities
     {
         [BsonElement("hotelId")]
         public string HotelId { get; set; }
+        [BsonElement("bookingId")]
+        public string? BookingId { get; set; }
         [BsonElement("serviceName")]
         public string ServiceName { get; set; }
 

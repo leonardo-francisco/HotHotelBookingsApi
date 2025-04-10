@@ -39,10 +39,18 @@ namespace HHB.Infrastructure.Repositories
             return await _collection.Find(_ => true).ToListAsync();
         }
 
-        public async Task<IEnumerable<Booking>> GetByClientIdAsync(int clientId)
+        public async Task<IEnumerable<Booking>> GetByClientIdAsync(string clientId)
         {
             var bookings = await _collection.Find(c => c.ClientId == clientId).ToListAsync();
             return bookings;
+        }
+
+        public async Task<IEnumerable<Booking>> GetByHotelAndRoomAsync(string hotelId, string roomId)
+        {
+            var filter = Builders<Booking>.Filter.Eq(b => b.HotelId, hotelId) &
+                 Builders<Booking>.Filter.Eq(b => b.RoomId, roomId);
+
+            return await _collection.Find(filter).ToListAsync();
         }
 
         public async Task<IEnumerable<Booking>> GetByHotelIdAsync(string hotelId)

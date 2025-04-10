@@ -33,9 +33,9 @@ namespace HHB.Application.Services
             return _mapper.Map<IEnumerable<RoomDto>>(rooms);
         }
 
-        public async Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(string roomId)
+        public async Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(string hotelId)
         {
-            var rooms = await _roomRepository.GetAvailableRoomsAsync(roomId);
+            var rooms = await _roomRepository.GetAvailableRoomsAsync(hotelId);
             return _mapper.Map<IEnumerable<RoomDto>>(rooms);
         }
 

@@ -9,9 +9,10 @@ namespace HHB.Domain.Contracts
 {
     public interface IBookingRepository : IRepository<Booking>
     {
-        Task<IEnumerable<Booking>> GetByClientIdAsync(int clientId);
+        Task<IEnumerable<Booking>> GetByClientIdAsync(string clientId);
         Task<IEnumerable<Booking>> GetByHotelIdAsync(string hotelId);
         Task<IEnumerable<Booking>> GetByRoomIdAsync(string roomId);
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
+        Task<IEnumerable<Booking>> GetByHotelAndRoomAsync(string hotelId, string roomId);
     }
 }

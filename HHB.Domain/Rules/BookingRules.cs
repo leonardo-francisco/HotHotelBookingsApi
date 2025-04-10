@@ -15,6 +15,12 @@ namespace HHB.Domain.Rules
                    (paymentStatus == PaymentStatus.Paid || paymentStatus == PaymentStatus.PartiallyPaid);
         }
 
+        public static bool CanCheckOut(BookingStatus bookingStatus, PaymentStatus paymentStatus)
+        {
+            return bookingStatus == BookingStatus.CheckedIn &&
+                   (paymentStatus == PaymentStatus.Paid || paymentStatus == PaymentStatus.PartiallyPaid);
+        }
+
         public static bool CanCancel(BookingStatus bookingStatus, PaymentStatus paymentStatus)
         {
             return bookingStatus == BookingStatus.Pending ||

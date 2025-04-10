@@ -54,6 +54,7 @@ namespace HHB.API.Configuration
             services.AddScoped<IValidator<AddressDto>, AddressValidator>();
             services.AddScoped<IValidator<RoomDto>, RoomValidator>();
             services.AddScoped<IValidator<BookingDto>, BookingValidator>();
+            services.AddScoped<IValidator<AdditionalServiceDto>, AdditionalServiceValidator>();
             #endregion
         }
     }

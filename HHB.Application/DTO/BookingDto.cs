@@ -9,13 +9,13 @@ namespace HHB.Application.DTO
     public class BookingDto
     {
         public string? Id { get; set; }
-        public int ClientId { get; set; }     
+        public string ClientId { get; set; }     
         public string HotelId { get; set; }
         public string RoomId { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public string Status { get; set; }
         public string PaymentStatus { get; set; }
-        public AdditionalServiceDto? AdditionalService { get; set; }
+        public List<AdditionalServiceDto>? AdditionalService { get; set; }
     }
 }

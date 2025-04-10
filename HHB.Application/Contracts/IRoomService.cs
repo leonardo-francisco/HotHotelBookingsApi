@@ -10,6 +10,6 @@ namespace HHB.Application.Contracts
     public interface IRoomService : IService<RoomDto>
     {
         Task<IEnumerable<RoomDto>> GetByHotelIdAsync(string hotelId);
-        Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(string roomId);
+        Task<IEnumerable<RoomDto>> GetAvailableRoomsAsync(string hotelId);
     }
 }

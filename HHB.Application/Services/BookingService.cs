@@ -43,19 +43,11 @@ namespace HHB.Application.Services
 
             var additional = _mapper.Map<List<Domain.Entities.AdditionalService>>(dto.AdditionalService);
 
-            // Adiciona os serviços novos
-            var existingBooking = _mapper.Map<Booking>(booking);
-            existingBooking.AdditionalService ??= new List<Domain.Entities.AdditionalService>();
-            existingBooking.AdditionalService.AddRange(additional);
-            await _bookingRepository.UpdateAsync(existingBooking.Id.ToString()!, existingBooking);
-
-            // Atualiza no registro do cliente
-            var client = await _customerRepository.GetByIdAsync(existingBooking.ClientId);
-            client.Bookings.Add(existingBooking);
-            await _customerRepository.UpdateAsync(client.Id.ToString(), client);
+            await UpdateBookingWithAdditionalServicesAsync(booking, additional);
+            await UpdateCustomerBookingAsync(booking);         
 
             return null;
-        }
+        }    
 
         public async Task DeleteAsync(string id)
         {
@@ -123,17 +115,14 @@ namespace HHB.Application.Services
 
             var booking = _mapper.Map<Booking>(entity);
             var result = await _bookingRepository.InsertAsync(booking);
-
-            var room = await _roomRepository.GetByIdAsync(entity.RoomId);
-            room.IsAvailable = false;
-            await _roomRepository.UpdateAsync(room.Id.ToString(), room);
-
-            var client = await _customerRepository.GetByIdAsync(booking.ClientId);
-            client.Bookings.Add(result);
-            await _customerRepository.UpdateAsync(client.Id.ToString(), client);
+           
+            await UpdateAvailabilityRoom(entity.RoomId);
+            await UpdateCustomerBookingAsync(result);            
 
             return _mapper.Map<BookingDto>(result);
         }
+
+       
 
         public async Task<bool> IsAvailableAsync(string hotelId, string roomId, DateTime startDate, DateTime endDate)
         {
@@ -159,9 +148,7 @@ namespace HHB.Application.Services
             booking.Status = BookingStatus.Canceled;
             await _bookingRepository.UpdateAsync(id, booking);
 
-            var room = await _roomRepository.GetByIdAsync(booking.RoomId);
-            room.IsAvailable = true;
-            await _roomRepository.UpdateAsync(room.Id.ToString(), room);
+            await UpdateAvailabilityRoom(booking.RoomId);           
 
             return null;
         }
@@ -199,9 +186,7 @@ namespace HHB.Application.Services
             booking.Status = BookingStatus.CheckedOut;
             await _bookingRepository.UpdateAsync(id, booking);
 
-            var room = await _roomRepository.GetByIdAsync(booking.RoomId);
-            room.IsAvailable = true;
-            await _roomRepository.UpdateAsync(room.Id.ToString(), room);
+            await UpdateAvailabilityRoom(booking.RoomId);
 
             return null;
         }
@@ -237,5 +222,31 @@ namespace HHB.Application.Services
 
             return _mapper.Map<BookingDto>(result);
         }
+
+        #region Private Methods
+        private async Task UpdateBookingWithAdditionalServicesAsync(Booking booking, List<Domain.Entities.AdditionalService> additional)
+        {
+            booking.AdditionalService ??= new List<Domain.Entities.AdditionalService>();
+            booking.AdditionalService.AddRange(additional);
+
+            await _bookingRepository.UpdateAsync(booking.Id.ToString()!, booking);
+        }
+
+        private async Task UpdateCustomerBookingAsync(Booking booking)
+        {
+            var client = await _customerRepository.GetByIdAsync(booking.ClientId);          
+            client.Bookings.Add(booking);
+
+            await _customerRepository.UpdateAsync(client.Id.ToString(), client);
+        }
+
+        private async Task UpdateAvailabilityRoom(string roomId)
+        {
+            var room = await _roomRepository.GetByIdAsync(roomId);
+            room.IsAvailable = false;
+
+            await _roomRepository.UpdateAsync(room.Id.ToString(), room);
+        }
+        #endregion
     }
 }

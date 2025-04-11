@@ -2,6 +2,7 @@
 using HHB.API.Configuration;
 using Scalar.AspNetCore;
 
+
 namespace HHB.API
 {
     public class Program
@@ -22,8 +23,9 @@ namespace HHB.API
                     policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                 });
             });
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            OpenApiCustomGenerator.AddOpenApiCustom(builder.Services);
 
             var app = builder.Build();
 
@@ -31,11 +33,17 @@ namespace HHB.API
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
-                app.MapScalarApiReference();
+                app.MapScalarApiReference(options =>
+                {
+                    options                    
+                    .WithTheme(ScalarTheme.Mars)
+                    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+                });
             }
-
+           
+           
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowAllOrigins");
             app.UseAuthorization();
 
 

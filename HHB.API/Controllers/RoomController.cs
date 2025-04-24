@@ -41,7 +41,7 @@ namespace HHB.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("allRooms/{id}")]
+        [HttpGet("allRooms/{hotelId}")]
         public async Task<IActionResult> GetRoomsByHotelId(string hotelId)
         {
             var result = await _roomService.GetByHotelIdAsync(hotelId);
@@ -98,11 +98,16 @@ namespace HHB.API.Controllers
             if (existingRoom == null)
                 return NotFound($"Quarto com ID {id} não foi encontrado.");
             
+            roomDto.Id = existingRoom.Id;
             var updatedRoom = await _roomService.UpdateAsync(id, roomDto);
 
             var hotel = await _hotelService.GetByIdAsync(roomDto.HotelId);
             if (hotel == null)
                 return NotFound($"Hotel com ID {roomDto.HotelId} não foi encontrado.");
+
+            var rooms = await _roomService.GetByHotelIdAsync(hotel.Id);
+
+            hotel.Rooms = (List<RoomDto>?)rooms;
 
             if (hotel.Rooms != null)
             {

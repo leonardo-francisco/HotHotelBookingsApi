@@ -62,6 +62,17 @@ namespace HHB.API.Controllers
             return Ok(new { Available = isAvailable });
         }
 
+        [HttpGet("searchByName")]
+        public async Task<IActionResult> GetBookingById([FromQuery] string roomId, [FromQuery] string query)
+        {
+            var result = await _bookingService.SearchByNameAsync(roomId, query);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateBooking([FromBody] BookingDto bookingDto)
         {

@@ -223,6 +223,15 @@ namespace HHB.Application.Services
             return _mapper.Map<BookingDto>(result);
         }
 
+        public async Task<BookingDto> SearchByNameAsync(string roomId, string name)
+        {
+            var booking = await _bookingRepository.SearchByName(roomId, name);
+
+            if (booking == null) return null;
+
+            return _mapper.Map<BookingDto>(booking);
+        }
+
         #region Private Methods
         private async Task UpdateBookingWithAdditionalServicesAsync(Booking booking, List<Domain.Entities.AdditionalService> additional)
         {
@@ -247,6 +256,8 @@ namespace HHB.Application.Services
 
             await _roomRepository.UpdateAsync(room.Id.ToString(), room);
         }
+
+       
         #endregion
     }
 }

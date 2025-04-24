@@ -15,6 +15,10 @@ namespace HHB.Domain.Entities
         public string Email { get; set; }
         [BsonElement("phone")]
         public string Phone { get; set; }
+
+        [BsonElement("password")]
+        public string Password { get; set; }
+
         [BsonElement("reservation")]
         public ICollection<Booking>? Bookings { get; private set; }
     }

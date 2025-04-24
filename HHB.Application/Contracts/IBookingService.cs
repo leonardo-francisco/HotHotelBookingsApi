@@ -14,6 +14,7 @@ namespace HHB.Application.Contracts
         Task<IEnumerable<BookingDto>> GetByHotelIdAsync(string hotelId);
         Task<IEnumerable<BookingDto>> GetByRoomIdAsync(string roomId);
         Task<IEnumerable<BookingDto>> GetActiveBookingsAsync();
+        Task<BookingDto> SearchByNameAsync(string roomId, string name);
         Task<bool> IsAvailableAsync(string hotelId, string roomId, DateTime startDate, DateTime endDate);
         Task<IEnumerable<Room>> GetAvailableRoomsAsync(string hotelId, DateTime checkIn, DateTime checkOut);
         Task<string> TryCheckInAsync(string id);

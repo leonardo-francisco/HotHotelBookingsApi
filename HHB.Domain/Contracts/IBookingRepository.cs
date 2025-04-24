@@ -14,5 +14,6 @@ namespace HHB.Domain.Contracts
         Task<IEnumerable<Booking>> GetByRoomIdAsync(string roomId);
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
         Task<IEnumerable<Booking>> GetByHotelAndRoomAsync(string hotelId, string roomId);
+        Task<Booking> SearchByName(string roomId, string name);
     }
 }

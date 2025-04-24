@@ -61,6 +61,7 @@ namespace HHB.Infrastructure.Repositories
                 .Set(c => c.Name, entity.Name)
                 .Set(c => c.Email, entity.Email)
                 .Set(c => c.Phone, entity.Phone)
+                .Set(c => c.Password, entity.Password)
                 .Set(c => c.Bookings, entity.Bookings);
 
             await _collection.UpdateOneAsync(filter, update);

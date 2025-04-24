@@ -15,10 +15,12 @@ namespace HHB.Infrastructure.Repositories
     public class BookingRepository : IBookingRepository
     {
         private readonly IMongoCollection<Booking> _collection;
+        private readonly IMongoCollection<Customer> _customerCollection;
 
         public BookingRepository(MongoDbContext context)
         {
             _collection = context.Bookings;
+            _customerCollection = context.Customers;
         }
 
         public async Task DeleteAsync(string id)
@@ -78,6 +80,19 @@ namespace HHB.Infrastructure.Repositories
         {
             await _collection.InsertOneAsync(entity);
             return entity;
+        }
+
+        public async Task<Booking> SearchByName(string roomId, string name)
+        {
+            var customer = await _customerCollection.Find(c => c.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+
+            if (customer == null)
+                return null;
+
+            // 2. Busca a reserva com RoomId + CustomerId
+            var booking = await _collection.Find(b => b.RoomId == roomId && b.ClientId == customer.Id.ToString()).FirstOrDefaultAsync();
+
+            return booking;
         }
 
         public async Task<Booking> UpdateAsync(string id, Booking entity)

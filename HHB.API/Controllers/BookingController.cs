@@ -92,7 +92,7 @@ namespace HHB.API.Controllers
 
         }
 
-        [HttpPost("{id}/checkin")]
+        [HttpPost("checkin/{id}")]
         public async Task<IActionResult> CheckIn(string id)
         {
             var error = await _bookingService.TryCheckInAsync(id);
@@ -103,7 +103,7 @@ namespace HHB.API.Controllers
             return Ok("Check-in realizado com sucesso.");
         }
 
-        [HttpPost("{id}/checkout")]
+        [HttpPost("checkout/{id}")]
         public async Task<IActionResult> CheckedOut(string id)
         {
             var error = await _bookingService.TryCheckOutAsync(id);
